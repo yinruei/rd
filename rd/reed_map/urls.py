@@ -13,13 +13,10 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.urls import path
-from django.conf import settings
-from django.conf.urls.static import static
-from django.conf.urls import include
-from rd.reed_map import urls as reed_map
+from django.urls import path, re_path
+from .views import index
 
 urlpatterns = [
-    # path('admin/', admin.site.urls),
-    path('', include(reed_map))
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    # path('/<slug:init_time>', index, name='index'),
+    path('', index, name='index'),
+]

@@ -1,0 +1,78 @@
+{% load staticfiles %}
+{% load compress %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta charset="UTF-8">
+  <title>蘆葦展示</title>
+
+  {% compress js %}
+  <script src="{% static 'js/reed_map/vue.js' %}"></script>
+  <script src="{% static 'js/reed_map/es6-promise.auto.js' %}"></script>
+  <script src="{% static 'js/reed_map/babel.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/leaflet.js' %}"></script>
+
+  <script type="text/babel" data-presets="es2015,stage-2" src="{% static "components/reed_map/Map.js" %}"></script>
+  {% endcompress %}
+
+  {% compress css %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/reed_map/main.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/reed_map/map.css' %}" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/leaflet.css' %}" />
+  {% endcompress %}
+
+  <script type="text/javascript">
+    var GV = GV || {};
+
+  </script>
+
+  <style>
+    [v-cloak] {
+      display: none;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="reed_map_platform">
+123
+  </div>
+  <script type="text/babel" data-presets="es2015,stage-2">
+
+    Vue.config.devtools = true;
+    window.app = new Vue({
+      el: '#reed_map_platform',
+      delimiters: ["[[", "]]"],
+      components: {
+      },
+
+      data: {
+      },
+
+      computed: {
+      },
+
+      methods: {
+      },
+
+      watch: {
+      },
+
+      mounted() {
+        // this.$nextTick(() => {
+        // })
+      },
+
+      created() {
+
+      },
+
+    });
+  </script>
+</body>
