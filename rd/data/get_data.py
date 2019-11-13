@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 def get_green_restaurant_data():
     green_restaurant = []
@@ -7,8 +8,8 @@ def get_green_restaurant_data():
             '照片0__(fb目前頭貼)', '照片1','照片2', '照片3', '照片4', '照片5', '照片6',
             '照片(推薦頁)','近期更新時間']
 
-    data = df[header]
-    context = {}
+    data = df.replace(np.nan, '', regex=True)
+
     img_ch_list = ['照片0__(fb目前頭貼)', '照片1', '照片2', '照片3', '照片4', '照片5', '照片6', '照片(推薦頁)']
     for i, row in enumerate(data.values):
         data_index = data.loc[i]
@@ -20,13 +21,13 @@ def get_green_restaurant_data():
         data_dict['tel'] = data_dict.pop('電話')
         data_dict['bussiness_time'] = data_dict.pop('開放時間(統一格式)')
         data_dict['updtime'] = data_dict.pop('近期更新時間')
-
+        data_dict['updtime'] = str(data_dict['updtime'])[:6]
         img_list = []
         data_dict['imgs'] = img_list
 
         for key, value in data_dict.items():
             if key in img_ch_list:
-                if value is not None:
+                if value != "":
                     img_list.append(value)
 
         del data_dict['照片0__(fb目前頭貼)'], data_dict['照片1'], data_dict['照片2'], data_dict['照片3'], data_dict['照片4'], data_dict['照片5'], data_dict['照片6'], data_dict['照片(推薦頁)']
