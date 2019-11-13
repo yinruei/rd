@@ -1,0 +1,45 @@
+
+.marker_btn_container {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+button:focus {
+	outline: none;
+}
+
+.btn {
+	border: 1px solid #fff;
+}
+
+.btn_white {
+  color: #333;
+  background-color: rgba(#fff, 0.4);
+}
+
+
+.marker_btn {
+  width: 40px;
+  height: 40px;
+}
+
+.marker_btn > label {
+  display: block;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.marker_btn > label > img {
+  width: 100%;
+}
+
+input:checked ~ label {
+  background: red;
+}
+
+.u-text-align-left { text-align: left; }
+.u-margin-right-XS {margin-right: 4px; }
+
+.u-hide { display: none; }
