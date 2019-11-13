@@ -1,5 +1,14 @@
 import pandas as pd
 import numpy as np
+import os
+import sys
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+if BASE_DIR not in sys.path:
+    sys.path.append(BASE_DIR)
+import env
+
+from django.conf import settings
 
 def get_green_restaurant_data():
     green_restaurant = []
@@ -35,4 +44,11 @@ def get_green_restaurant_data():
 
     return green_restaurant
 
-get_green_restaurant_data()
+# get_green_restaurant_data()
+
+def get_reed_datas():
+    df = pd.read_excel(os.path.join(settings.DATA_ROOT, "plants.xlsx"))
+    fetched_reed_datas = df.loc[df['vernacularName'].isin(['臺灣蘆竹', '蘆竹', '蘆葦', '臺灣蘆葦'])]
+    print(fetched_reed_datas)
+
+# get_reed_datas()
