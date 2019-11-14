@@ -58,7 +58,6 @@ def get_reed_datas():
 
     reed_list = []
     for index, row in filter_header_data.iterrows():
-        # print(index) # 输出列名
         data_index = filter_header_data.loc[index]
         data_dict = data_index.to_dict()
         data_dict['name'] = data_dict.pop('vernacularName')
