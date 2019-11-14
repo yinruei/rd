@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath earth_trash earth_trash.wsgi
+web: gunicorn --pythonpath rd rd.wsgi
