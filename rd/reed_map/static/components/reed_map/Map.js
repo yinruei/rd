@@ -13,12 +13,7 @@ const ReedMap = {
       recycling_markers: [],
       restaurant_markers: [],
 
-      reed_datas: [
-        {
-          'lat': 23.045915,
-          'lon': 120.994775,
-        },
-      ],
+      reed_datas: GV.REED_DATAS,
 
       restaurant_datas: GV.GEEN_RESTAURANT
     }
@@ -36,12 +31,9 @@ const ReedMap = {
       this.map = new L.Map('map', {
           center: new L.LatLng(23.045915, 120.994775),
           zoom: 8,
-          maxZoom: 15,
+          maxZoom: 18,
           minZoom: 7,
           maxBounds: L.latLngBounds(southWest, northEast),
-          // layers: [
-          //   this.base_layers[this.base_layer]
-          // ]
       });
 
       this.map.addLayer(new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
@@ -49,9 +41,39 @@ const ReedMap = {
       }));
     },
 
+    get_context(data) {
+      if (data) {
+        return data
+      }
+
+      return '--'
+    },
+
+    get_marker_popup(data) {
+      let popup_html = ''
+      if (data.hasOwnProperty('name')) {
+        popup_html += '<div>名稱: ' + this.get_context(data.name) + '</div>'
+      }
+      if (data.hasOwnProperty('address')) {
+        popup_html += '<div>地址: ' + this.get_context(data.address) + '</div>'
+      }
+      if (data.hasOwnProperty('bussiness_time')) {
+        popup_html += '<div>營業時間: ' + this.get_context(data.bussiness_time) + '</div>'
+      }
+      if (data.hasOwnProperty('updtime')) {
+        popup_html += '<div>更新時間: ' + this.get_context(data.updtime) + '</div>'
+      }
+
+      return popup_html
+    },
+
     add_item_marker(datas, markers, icon) {
       for (let data of datas) {
-        let marker = L.marker([data['lat'], data['lon']], {icon: icon})
+        let marker_popup_info = this.get_marker_popup(data)
+        let popup_options = {
+          'className' : 'custom_marker_popup'
+        }
+        let marker = L.marker([data['lat'], data['lon']], {icon: icon}).bindPopup(marker_popup_info, popup_options)
         this.map.addLayer(marker)
         markers.push(marker)
       }
@@ -98,9 +120,6 @@ const ReedMap = {
   },
 
   watch: {
-    data_info() {
-      // this.create_marker()
-    },
 
     markers_info: {
       handler(new_markers_info, old_info) {
