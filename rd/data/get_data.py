@@ -53,14 +53,21 @@ def get_green_restaurant_data():
 def get_reed_datas():
     df = pd.read_excel(os.path.join(settings.DATA_ROOT, "plants.xlsx"))
     fetched_reed_datas = df.loc[df['vernacularName'].isin(['臺灣蘆竹', '蘆竹', '蘆葦', '臺灣蘆葦', '開卡蘆'])]
-    # print(len(fetched_reed_datas))
     header = ['decimalLongitude','decimalLatitude', 'vernacularName']
     filter_header_data = fetched_reed_datas[header]
-    print(type(filter_header_data))
 
+    reed_list = []
     for index, row in filter_header_data.iterrows():
-        print(index) # 输出列名
-        data_index = data.loc[index]
-        print(data_index)
+        # print(index) # 输出列名
+        data_index = filter_header_data.loc[index]
+        data_dict = data_index.to_dict()
+        data_dict['name'] = data_dict.pop('vernacularName')
+        data_dict['lat'] = data_dict.pop('decimalLatitude')
+        data_dict['lon'] = data_dict.pop('decimalLongitude')
+        reed_list.append(data_dict)
+        if data_dict['lon'] == "" or data_dict['lat'] == "":
+            del reed_list[index]
 
-# get_reed_datas()
+    return
+
+get_reed_datas()
