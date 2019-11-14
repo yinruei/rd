@@ -48,7 +48,6 @@ def get_green_restaurant_data():
 
     return green_restaurant
 
-# get_green_restaurant_data()
 
 def get_reed_datas():
     df = pd.read_excel(os.path.join(settings.DATA_ROOT, "plants.xlsx"))
@@ -67,6 +66,4 @@ def get_reed_datas():
         if data_dict['lon'] == "" or data_dict['lat'] == "":
             del reed_list[index]
 
-    return
-
-get_reed_datas()
+    return reed_list
