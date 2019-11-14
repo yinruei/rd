@@ -2,7 +2,7 @@
 const ReedMap = {
   name: 'ReedMap',
   props: [
-    'markers_info'
+    'markers_info',
   ],
 
   data() {
@@ -11,7 +11,7 @@ const ReedMap = {
 
       reed_markers: [],
       recycling_markers: [],
-      store_markers: [],
+      restaurant_markers: [],
 
       reed_datas: [
         {
@@ -19,17 +19,8 @@ const ReedMap = {
           'lon': 120.994775,
         },
       ],
-      recycling_datas: [
-        {
-          'lat': 23.145915,
-          'lon': 119.994775,
-        },
-        {
-          'lat': 24.345915,
-          'lon': 120.994775,
-        },
-      ],
 
+      restaurant_datas: GV.GEEN_RESTAURANT
     }
   },
 
@@ -60,7 +51,6 @@ const ReedMap = {
 
     add_item_marker(datas, markers, icon) {
       for (let data of datas) {
-        console.log([data['lat'], data['lon']], icon)
         let marker = L.marker([data['lat'], data['lon']], {icon: icon})
         this.map.addLayer(marker)
         markers.push(marker)
@@ -74,25 +64,37 @@ const ReedMap = {
       markers = []
     },
 
-    create_marker() {
-      this.add_item_marker(this.reed_datas, this.reed_markers, this.markers_info.reed_icon)
+    setup_markers(markers_datas) {
+      if (this.map !== null) {
+        for (let marker_info of markers_datas) {
+          let datas = null
+          let markers = null
 
-      // for (let recycling_data of this.recycling_green_datas) {
-      //   L.marker([recycling_data['lat'], recycling_data['lon']], {icon: IconInfo.recycling_green_icon}).addTo(this.map)
-      // }
+          if (marker_info.name === 'reed') {
+            datas = this.reed_datas
+            markers = this.reed_markers
+          }
+          else if (marker_info.name === 'green_restaurant') {
+            datas = this.restaurant_datas
+            markers = this.restaurant_markers
+          }
 
-      // for (let recycling_data of this.recycling_gray_datas) {
-      //   L.marker([recycling_data['lat'], recycling_data['lon']], {icon: IconInfo.recycling_gray_icon}).addTo(this.map)
-      // }
-
+          if (datas !== null && markers !== null) {
+            if (marker_info.selected) {
+              this.add_item_marker(datas, markers, marker_info.icon)
+            }
+            else {
+              this.remove_item_marker(markers)
+            }
+          }
+        }
+      }
     }
   },
 
   mounted() {
-    // 沒有map init 就先呼叫到watch的markers_info ＱＱＱＱＱ
     this.map_init()
-    console.log("after init")
-    this.create_marker()
+    this.setup_markers(this.markers_info)
   },
 
   watch: {
@@ -102,30 +104,7 @@ const ReedMap = {
 
     markers_info: {
       handler(new_markers_info, old_info) {
-        if (this.map !== null) {
-          for (let marker_info of new_markers_info) {
-            let datas = null
-            let markers = null
-
-            if (marker_info.name === 'reed') {
-              datas = this.reed_datas
-              markers = this.reed_markers
-            }
-            else if (marker_info.name === 'recycling') {
-              datas = this.reed_datas
-              markers = this.reed_markers
-            }
-
-            if (datas !== null && markers !== null) {
-              if (marker_info.selected) {
-                this.add_item_marker(datas, markers, marker_info.icon)
-              }
-              else {
-                this.remove_item_marker(markers)
-              }
-            }
-          }
-        }
+        this.setup_markers(new_markers_info)
       },
       deep: true,
       immediate: true

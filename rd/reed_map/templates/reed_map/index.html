@@ -33,7 +33,9 @@
       REED_ICON: "{% static 'imgs/reed.png' %}",
       RECYCLING_GRAY_ICON: "{% static 'imgs/recycling_gray.png' %}",
       RECYCLING_GREEN_ICON: "{% static 'imgs/recycling_green.png' %}",
-    }
+    };
+
+    GV.GEEN_RESTAURANT = {{ green_restaurant|safe }};
 
   </script>
 
@@ -71,6 +73,8 @@
       },
 
       data: {
+        restaurant_datas: GV.GEEN_RESTAURANT,
+
         markers_info: [{
           name: 'reed',
           img: GV.REED_ICON,
@@ -80,24 +84,15 @@
             iconSize:     [56, 56],
             iconAnchor:   [13, 13]
           })
-        // }, {
-        //   name: 'recycling',
-        //   img: GV.RECYCLING_GRAY_ICON,
-        //   selected: true,
-        //   icon: L.icon({
-        //     iconUrl: GV.RECYCLING_GRAY_ICON,
-        //     iconSize:     [56, 56],
-        //     iconAnchor:   [13, 13]
-        //   })
-        // }, {
-        //   name: 'store',
-        //   img: GV.STORE_ICON,
-        //   selected: true,
-        //   icon: L.icon({
-        //     iconUrl: GV.RECYCLING_GREEN_ICON,
-        //     iconSize:     [56, 56],
-        //     iconAnchor:   [13, 13]
-        //   })
+        }, {
+          name: 'green_restaurant',
+          img: GV.RECYCLING_GREEN_ICON,
+          selected: true,
+          icon: L.icon({
+            iconUrl: GV.RECYCLING_GREEN_ICON,
+            iconSize:     [56, 56],
+            iconAnchor:   [13, 13]
+          })
         }]
       },
 
