@@ -20,15 +20,3 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "rd.settings")
 #   conf/dev is ignore by git, you can create your own dev config under conf/dev
 _MODE = os.environ.get('MODE_ENV', 'prod')
 os.environ["CONF"] = _CONF = os.path.join(BASE_DIR, 'conf', _MODE)
-
-# SECURITY WARNING: keep the secret key used in production secret!
-os.environ["SECRET_KEY"] = 'aq-!umz@(rq6+jd6=ympdkark$eglipr+u5u2yg5pxcf8$$+x-'
-# from django.utils.crypto import get_random_string
-# os.environ["SECRET_KEY"] = get_random_string(50, os.environ["SECRET_KEY"])
-
-
-# env for cb log
-# _LOG_DIR = os.path.join(BASE_DIR, 'logfiles')
-# os.environ.setdefault('LOG_CONFIG', os.path.join(_CONF, 'log.conf'))
-# os.environ.setdefault('LOG_DIR', _LOG_DIR)
-# os.environ.setdefault('COLLECTIVE_DIR', _LOG_DIR)
