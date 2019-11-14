@@ -33,10 +33,6 @@ def get_green_restaurant_data():
         data_dict['bussiness_time'] = data_dict.pop('開放時間(統一格式)')
         data_dict['updtime'] = data_dict.pop('近期更新時間')
         data_dict['updtime'] = str(data_dict['updtime'])[:6]
-        # if data_dict['lon'] == "" or data_dict['lat'] == "":
-        #     print(i)
-        #     del green_restaurant[i]
-        # return
 
         img_list = []
         data_dict['imgs'] = img_list
@@ -45,9 +41,6 @@ def get_green_restaurant_data():
                 if value != "":
                     img_list.append(value)
 
-
-
-
         del data_dict['照片0__(fb目前頭貼)'], data_dict['照片1'], data_dict['照片2'], data_dict['照片3'], data_dict['照片4'], data_dict['照片5'], data_dict['照片6'], data_dict['照片(推薦頁)']
         green_restaurant.append(data_dict)
         if data_dict['lon'] == "" or data_dict['lat'] == "":
@@ -55,7 +48,7 @@ def get_green_restaurant_data():
 
     return green_restaurant
 
-get_green_restaurant_data()
+# get_green_restaurant_data()
 
 def get_reed_datas():
     df = pd.read_excel(os.path.join(settings.DATA_ROOT, "plants.xlsx"))
@@ -63,7 +56,6 @@ def get_reed_datas():
     # print(len(fetched_reed_datas))
     header = ['decimalLongitude','decimalLatitude', 'vernacularName']
     filter_header_data = fetched_reed_datas[header]
-    # print(filter_header_data)
     print(type(filter_header_data))
 
     for index, row in filter_header_data.iterrows():
