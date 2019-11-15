@@ -43,7 +43,8 @@ INSTALLED_APPS = (
     'compressor',
     # your app here
     'rd',
-    'rd.reed_map'
+    'rd.reed_map',
+    'storages'
 )
 
 MIDDLEWARE = [
