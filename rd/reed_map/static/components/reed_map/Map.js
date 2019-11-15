@@ -14,8 +14,24 @@ const ReedMap = {
       restaurant_markers: [],
 
       reed_datas: GV.REED_DATAS,
+      restaurant_datas: GV.GEEN_RESTAURANT,
+      recycling_datas: [{
+        lat: 25.095184,
+        lon: 121.611789
+      },{
+        lat: 24.795184,
+        lon: 120.611789
+      },{
+        lat: 24.095184,
+        lon: 120.811789
+      },{
+        lat: 25.095184,
+        lon: 121.611789
+      },{
+        lat: 24.095184,
+        lon: 120.611789
+      }]
 
-      restaurant_datas: GV.GEEN_RESTAURANT
     }
   },
 
@@ -99,6 +115,10 @@ const ReedMap = {
           else if (marker_info.name === 'green_restaurant') {
             datas = this.restaurant_datas
             markers = this.restaurant_markers
+          }
+          else if (marker_info.name === 'recycling') {
+            datas = this.recycling_datas
+            markers = this.recycling_markers
           }
 
           if (datas !== null && markers !== null) {
