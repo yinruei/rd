@@ -15,7 +15,7 @@
   <script src="{% static 'js/reed_map/vue.js' %}"></script>
   <script src="{% static 'js/reed_map/es6-promise.auto.js' %}"></script>
   <script src="{% static 'js/reed_map/babel.min.js' %}"></script>
-  <script type="text/javascript" src="{% static 'js/leaflet.js' %}"></script>
+  <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js" ></script>
 
   <script type="text/babel" data-presets="es2015,stage-2" src="{% static "components/reed_map/Map.js" %}"></script>
   <script type="text/babel" data-presets="es2015,stage-2" src="{% static "components/reed_map/Aside.js" %}"></script>
@@ -31,8 +31,8 @@
   <script type="text/javascript">
     var GV = {
       REED_ICON: "{% static 'imgs/reed.png' %}",
-      RECYCLING_GRAY_ICON: "{% static 'imgs/recycling_gray.png' %}",
-      RECYCLING_GREEN_ICON: "{% static 'imgs/recycling_green.png' %}",
+      RECYCLING_ICON: "{% static 'imgs/recycling.png' %}",
+      RESTAURANT_ICON: "{% static 'imgs/restaurant.png' %}"
     };
 
     GV.GEEN_RESTAURANT = {{ green_restaurant|safe }};
@@ -82,17 +82,26 @@
           selected: true,
           icon: L.icon({
             iconUrl: GV.REED_ICON,
-            iconSize:     [56, 56],
-            iconAnchor:   [13, 13]
+            iconSize: [46, 46],
+            iconAnchor: [23, 13]
           })
         }, {
           name: 'green_restaurant',
-          img: GV.RECYCLING_GREEN_ICON,
+          img: GV.RESTAURANT_ICON,
           selected: true,
           icon: L.icon({
-            iconUrl: GV.RECYCLING_GREEN_ICON,
-            iconSize:     [56, 56],
-            iconAnchor:   [13, 13]
+            iconUrl: GV.RESTAURANT_ICON,
+            iconSize: [46, 46],
+            iconAnchor: [23, 13]
+          })
+        }, {
+          name: 'recycling',
+          img: GV.RECYCLING_ICON,
+          selected: true,
+          icon: L.icon({
+            iconUrl: GV.RECYCLING_ICON,
+            iconSize: [46, 46],
+            iconAnchor: [23, 13]
           })
         }]
       },

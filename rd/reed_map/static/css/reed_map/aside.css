@@ -4,6 +4,7 @@
   width: 100%;
   flex-wrap: wrap;
   justify-content: space-around;
+  margin: 10px 0;
 }
 
 button:focus {
@@ -21,14 +22,15 @@ button:focus {
 
 
 .marker_btn {
-  width: 40px;
-  height: 40px;
+  width: 45px;
+  height: 45px;
 }
 
 .marker_btn > label {
   display: block;
   cursor: pointer;
   border-radius: 10px;
+  border: 1px solid #dcdcdc;
 }
 
 .marker_btn > label > img {
@@ -36,7 +38,8 @@ button:focus {
 }
 
 input:checked ~ label {
-  background: red;
+  background: linear-gradient(to bottom, #c9c9c9 5%, #d3d3d3 100%);
+  background-color: #d3d3d3;
 }
 
 .u-text-align-left { text-align: left; }
