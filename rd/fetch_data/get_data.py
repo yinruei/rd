@@ -74,7 +74,7 @@ def write_to_green_restaurant_csv(green_restaurant):
 def get_reed_datas():
     df = pd.read_excel(os.path.join(settings.DATA_ROOT, "plants.xlsx"))
     fetched_reed_datas = df.loc[df['vernacularName'].isin(['臺灣蘆竹', '蘆竹', '蘆葦', '臺灣蘆葦', '開卡蘆'])]
-    header = ['decimalLongitude','decimalLatitude', 'vernacularName']
+    header = ['id', 'decimalLongitude','decimalLatitude', 'vernacularName']
     filter_header_data = fetched_reed_datas[header]
 
     reed_list = []
@@ -85,14 +85,11 @@ def get_reed_datas():
         data_dict['name'] = data_dict.pop('vernacularName')
         data_dict['lat'] = data_dict.pop('decimalLatitude')
         data_dict['lon'] = data_dict.pop('decimalLongitude')
-        data_dict['id'] = idx+1
-        idx +=1
         if (data_dict['lon'] == 120.0502778 or data_dict['lat'] == 24.75027778) or (data_dict['lon'] == "" or data_dict['lat'] == ""):
             continue
         reed_list.append(data_dict)
 
     return reed_list
-
 
 def write_to_reed_csv(reed_list):
     with open('reed_data.csv', 'w', newline='') as csvFile:
