@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
+import json
 import sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -67,3 +68,12 @@ def get_reed_datas():
             del reed_list[index]
 
     return reed_list
+
+
+def get_solitary_bee_hotel():
+    file_name = 'solitary_bee_hotel.geojson'
+    file_datas = {}
+    with open(os.path.join(settings.DATA_ROOT, file_name)) as f:
+        file_datas = json.loads(f.read())
+
+    return file_datas["features"]
