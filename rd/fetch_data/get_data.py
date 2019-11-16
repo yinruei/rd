@@ -54,7 +54,7 @@ def get_green_restaurant_data():
 
     # return json.dumps(green_restaurant)
 
-get_green_restaurant_data()
+# get_green_restaurant_data()
 
 def write_to_green_restaurant_csv(green_restaurant):
     with open('green_restaurant.csv', 'w', newline='') as csvFile:
@@ -146,3 +146,35 @@ def get_solitary_bee_hotel():
         datas.append(_data)
 
     return datas
+
+
+def get_water_quality_data():
+    df = pd.read_excel(os.path.join(settings.DATA_ROOT, "water_quality.xlsx"))
+    data = df.replace(np.nan, '', regex=True)
+    water_qc_data = []
+
+    for index, row in data.iterrows():
+        data_index = data.loc[index]
+        data_dict = data_index.to_dict()
+        data_dict['river'] = data_dict.pop('河流')
+        data_dict['station'] = data_dict.pop('測站名稱')
+        data_dict['river_pollution_index'] = data_dict.pop('河川污染指數')
+        data_dict['lon'] = data_dict.pop('經度')
+        data_dict['lat'] = data_dict.pop('緯度')
+        data_dict['station_img'] = data_dict.pop('測站照片')
+        data_dict['station_url'] = data_dict.pop('測站網址')
+        if data_dict['lon'] == "" or data_dict['lat'] == "":
+            continue
+
+        water_qc_data.append(data_dict)
+        # if data_dict['river'] == '':
+        #     print(index)
+        #     data_dict.update(
+        #         {'river': water_qc_data[index]['river']}
+        #     )
+    # print(water_qc_data)
+    return water_qc_data
+
+
+
+get_water_quality_data()

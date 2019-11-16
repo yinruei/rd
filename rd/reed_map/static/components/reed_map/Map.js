@@ -9,6 +9,8 @@ const ReedMap = {
   data() {
     return {
       map: null,
+      selected_marker: null,
+      select_marker_id: null,
 
       reed_markers: [],
       recycling_markers: [],
@@ -20,19 +22,24 @@ const ReedMap = {
       recycling_datas: GV.BEE_HOTEL_DATAS,
       river_datas: [{
         lat: 25.095184,
-        lon: 121.611789
+        lon: 121.611789,
+        river_pollution_index: 2
       },{
         lat: 24.795184,
-        lon: 120.611789
+        lon: 120.611789,
+        river_pollution_index: 2
       },{
         lat: 24.095184,
-        lon: 120.811789
+        lon: 120.811789,
+        river_pollution_index: 3
       },{
         lat: 25.095184,
-        lon: 121.611789
+        lon: 121.611789,
+        river_pollution_index: 7
       },{
         lat: 24.095184,
-        lon: 120.611789
+        lon: 120.611789,
+        river_pollution_index: 2
       }]
 
     }
@@ -45,7 +52,7 @@ const ReedMap = {
   methods: {
     map_init() {
       let southWest = L.latLng(21.809023, 119.687789)
-      let northEast = L.latLng(25.295184, 122.386521)
+      let northEast = L.latLng(30.295184, 122.386521)
 
       this.map = new L.Map('map', {
           center: new L.LatLng(23.045915, 120.994775),
@@ -54,7 +61,7 @@ const ReedMap = {
           minZoom: 7,
           maxBounds: L.latLngBounds(southWest, northEast),
       });
-      console.log('21222', GV.MAP_TILE)
+
       this.map.addLayer(new L.TileLayer(GV.MAP_TILE, {
         attribution: '@Google'
       }))
@@ -97,24 +104,36 @@ const ReedMap = {
 
       if (this.user_edit_permission.hasOwnProperty(GV.USER)) {
         let user_permission = this.user_edit_permission[GV.USER]
+
         if (user_permission.indexOf(marker_type) >= 0) {
-          upload_btn = '<button>我要上傳</button>'
+          upload_btn = '<button @click="'+this.upload_data()+'">我要上傳</button>'
         }
       }
+      console.log(upload_btn)
 
       popup_html += upload_btn
 
       return popup_html
     },
 
+    upload_data() {
+      console.log("innnnnn", this.select_marker_id, this.selected_marker)
+    },
+
     add_item_marker(datas, markers, icon, marker_type) {
+      let self = this
       for (let data of datas) {
         let marker_popup_info = this.get_marker_popup(data, marker_type)
         let popup_options = {
           'className' : 'custom_marker_popup',
           maxWidth: 700
         }
-        let marker = L.marker([data['lat'], data['lon']], {icon: icon}).bindPopup(marker_popup_info, popup_options)
+        let marker = L.marker([data['lat'], data['lon']], {icon: icon, datas: data})
+                      .bindPopup(marker_popup_info, popup_options)
+                      .on('click', (e) => {
+                        self.selected_marker = marker_type
+                        self.select_marker_id = marker_type + e.target.options.datas.id
+                      })
         this.map.addLayer(marker)
         markers.push(marker)
       }
@@ -169,16 +188,27 @@ const ReedMap = {
 
     add_river_markers() {
       if (this.map !== null) {
-        for (let marker_info of this.river_datas) {
-          let geojsonMarkerOptions = {
-            radius: 8,
-            fillColor: "#ff7800",
-            color: "#000",
-            weight: 1,
-            opacity: 1,
-            fillOpacity: 0.8
+        for (let data of this.river_datas) {
+          let quality = data['river_pollution_index']
+
+          let icon_img = ''
+          // 水質(1~10)分三類<2(未/稍受汙染)、2~6(已受汙染)、>6(嚴重汙染)
+          if (quality < 2) {
+            icon_img = GV.NORMAL_WATER_ICON
           }
-          let marker = L.circleMarker([marker_info['lat'], marker_info['lon']], geojsonMarkerOptions);
+          else if (quality <= 6) {
+            icon_img = GV.MID_WATER_ICON
+          }
+          else {
+            icon_img = GV.BAD_WATER_ICON
+          }
+
+          let icon = L.icon({
+            iconUrl: icon_img,
+            // iconSize: [46, 36],
+            iconAnchor: [23, 18]
+          })
+          let marker = L.marker([data['lat'], data['lon']], {icon: icon, datas: data})
           this.map.addLayer(marker)
           this.river_markers.push(marker)
         }

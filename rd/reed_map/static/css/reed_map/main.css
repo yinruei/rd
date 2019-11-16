@@ -15,7 +15,7 @@ html, body {
   height: 30px;
   position: absolute;
   top: 6px;
-  z-index: 1000;
+  z-index: 1;
   right: 0;
   margin-right: 18px;
 }
