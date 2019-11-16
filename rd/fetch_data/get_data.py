@@ -78,7 +78,6 @@ def get_reed_datas():
     filter_header_data = fetched_reed_datas[header]
 
     reed_list = []
-    idx = 0
     for index, row in filter_header_data.iterrows():
         data_index = filter_header_data.loc[index]
         data_dict = data_index.to_dict()
