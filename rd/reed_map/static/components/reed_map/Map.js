@@ -63,8 +63,6 @@ const ReedMap = {
       });
 
       this.map.addLayer(new L.TileLayer(GV.MAP_TILE, {
-      // let map_tile = 'https://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}'
-      // this.map.addLayer(new L.TileLayer(map_tile, {
         attribution: '@Google'
       }))
 
