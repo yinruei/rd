@@ -45,7 +45,7 @@ const ReedMap = {
   methods: {
     map_init() {
       let southWest = L.latLng(21.809023, 119.687789)
-      let northEast = L.latLng(25.295184, 122.386521)
+      let northEast = L.latLng(30.295184, 122.386521)
 
       this.map = new L.Map('map', {
           center: new L.LatLng(23.045915, 120.994775),
@@ -54,8 +54,11 @@ const ReedMap = {
           minZoom: 7,
           maxBounds: L.latLngBounds(southWest, northEast),
       });
-      console.log('21222', GV.MAP_TILE)
-      this.map.addLayer(new L.TileLayer(GV.MAP_TILE, {
+
+      // this.map.addLayer(new L.TileLayer(GV.MAP_TILE, {
+
+      let map_tile = 'http://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}'
+      this.map.addLayer(new L.TileLayer(map_tile, {
         attribution: '@Google'
       }))
 
@@ -97,6 +100,7 @@ const ReedMap = {
 
       if (this.user_edit_permission.hasOwnProperty(GV.USER)) {
         let user_permission = this.user_edit_permission[GV.USER]
+
         if (user_permission.indexOf(marker_type) >= 0) {
           upload_btn = '<button>我要上傳</button>'
         }

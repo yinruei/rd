@@ -4,3 +4,7 @@
   margin-bottom: 2%;
   overflow: hidden;
 }
+
+.custom_marker_popup {
+  z-index: 2;
+}
