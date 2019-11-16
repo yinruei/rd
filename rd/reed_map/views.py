@@ -7,7 +7,8 @@ from django.shortcuts import render
 from rd.fetch_data.get_data import (
     get_green_restaurant_data,
     get_reed_datas,
-    get_solitary_bee_hotel
+    get_solitary_bee_hotel,
+    get_water_quality_data
 )
 from django.conf import settings
 
@@ -19,6 +20,7 @@ def index(request):
     # green_restaurant = get_green_restaurant_data()
     # reed_datas = get_reed_datas()
     bee_hotel_datas = get_solitary_bee_hotel()
+    water_quality_data = get_water_quality_data()
 
     DATA_ROOT = os.path.join(settings.DATA_ROOT)
     with open(os.path.join(DATA_ROOT, 'green_restaurant.json'), 'r') as f:
@@ -32,7 +34,8 @@ def index(request):
         'green_restaurant': green_restaurant,
         'reed_datas': reed_datas,
         'bee_hotel_datas': bee_hotel_datas,
-        'map_tile': settings.MAP_TILE
+        'map_tile': settings.MAP_TILE,
+        'water_quality_data': water_quality_data
     }
 
     return render(request, template, context)

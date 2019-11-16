@@ -20,27 +20,7 @@ const ReedMap = {
       reed_datas: GV.REED_DATAS,
       restaurant_datas: GV.GEEN_RESTAURANT,
       recycling_datas: GV.BEE_HOTEL_DATAS,
-      river_datas: [{
-        lat: 25.095184,
-        lon: 121.611789,
-        river_pollution_index: 2
-      },{
-        lat: 24.795184,
-        lon: 120.611789,
-        river_pollution_index: 2
-      },{
-        lat: 24.095184,
-        lon: 120.811789,
-        river_pollution_index: 3
-      },{
-        lat: 25.095184,
-        lon: 121.611789,
-        river_pollution_index: 7
-      },{
-        lat: 24.095184,
-        lon: 120.611789,
-        river_pollution_index: 2
-      }]
+      river_datas: GV.RIVER_DATAS
 
     }
   },

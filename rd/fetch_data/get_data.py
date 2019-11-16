@@ -163,18 +163,19 @@ def get_water_quality_data():
         data_dict['lat'] = data_dict.pop('緯度')
         data_dict['station_img'] = data_dict.pop('測站照片')
         data_dict['station_url'] = data_dict.pop('測站網址')
-        if data_dict['lon'] == "" or data_dict['lat'] == "":
-            continue
 
         water_qc_data.append(data_dict)
-        # if data_dict['river'] == '':
-        #     print(index)
-        #     data_dict.update(
-        #         {'river': water_qc_data[index]['river']}
-        #     )
-    # print(water_qc_data)
-    return water_qc_data
+        if data_dict['river'] == '':
+            data_dict.update({
+                'river': water_qc_data[index-1]['river']
+            })
 
+    reconstruct_water_quality = []
+    for water in water_qc_data:
+        if water['lon'] == "" or water['lat'] == "":
+            continue
+        reconstruct_water_quality.append(water)
 
+    return reconstruct_water_quality
 
-get_water_quality_data()
+# get_water_quality_data()
