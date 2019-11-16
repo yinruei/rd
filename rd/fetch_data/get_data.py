@@ -49,7 +49,12 @@ def get_green_restaurant_data():
         if data_dict['lon'] == "" or data_dict['lat'] == "":
             del green_restaurant[i]
 
-    return green_restaurant
+    with open('green_restaurant.json', 'w') as f:
+        json.dump(green_restaurant, f)
+
+    # return json.dumps(green_restaurant)
+
+get_green_restaurant_data()
 
 def write_to_green_restaurant_csv(green_restaurant):
     with open('green_restaurant.csv', 'w', newline='') as csvFile:
@@ -88,7 +93,12 @@ def get_reed_datas():
             continue
         reed_list.append(data_dict)
 
-    return reed_list
+    with open('reed_data.json', 'w') as f:
+        json.dump(reed_list, f)
+    # return json.dumps(reed_list)
+
+get_reed_datas()
+
 
 def write_to_reed_csv(reed_list):
     with open('reed_data.csv', 'w', newline='') as csvFile:
