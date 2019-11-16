@@ -32,10 +32,14 @@
     var GV = {
       REED_ICON: "{% static 'imgs/reed.png' %}",
       RECYCLING_ICON: "{% static 'imgs/recycling.png' %}",
+      GEEN_RESTAURANT_ICON: "{% static 'imgs/geen_restaurant.png' %}",
       RESTAURANT_ICON: "{% static 'imgs/restaurant.png' %}",
       RIVER_ICON: "{% static 'imgs/reed.png' %}",
+      NORMAL_WATER_ICON: "{% static 'imgs/normal_water_quality.png' %}",
+      MID_WATER_ICON: "{% static 'imgs/mid_water_quality.png' %}",
+      BAD_WATER_ICON: "{% static 'imgs/bad_water_quality.png' %}",
     };
-    GV.MAP_TILE = '{{ map_tile }}';
+    GV.MAP_TILE = '{{ map_tile|safe }}';
     GV.GEEN_RESTAURANT = {{ green_restaurant|safe }};
     GV.REED_DATAS = {{ reed_datas|safe }};
     GV.BEE_HOTEL_DATAS = {{ bee_hotel_datas|safe }};
@@ -90,8 +94,8 @@
           selected: true,
           icon: L.icon({
             iconUrl: GV.REED_ICON,
-            iconSize: [46, 46],
-            iconAnchor: [23, 13]
+            // iconSize: [36, 36],
+            iconAnchor: [23, 18]
           })
         }, {
           name: 'green_restaurant',
@@ -99,8 +103,8 @@
           selected: true,
           icon: L.icon({
             iconUrl: GV.RESTAURANT_ICON,
-            iconSize: [46, 46],
-            iconAnchor: [23, 13]
+            // iconSize: [36, 36],
+            iconAnchor: [23, 18]
           })
         }, {
           name: 'recycling',
@@ -108,12 +112,12 @@
           selected: true,
           icon: L.icon({
             iconUrl: GV.RECYCLING_ICON,
-            iconSize: [46, 46],
-            iconAnchor: [23, 13]
+            // iconSize: [36, 36],
+            iconAnchor: [24, 10]
           })
         }, {
           name: 'river',
-          img: GV.RIVER_ICON,
+          img: GV.NORMAL_WATER_ICON,
           selected: true
         }]
       },
