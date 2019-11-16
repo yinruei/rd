@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
+import json
 import sys
 import csv
 
@@ -111,3 +112,21 @@ def write_to_reed_csv(reed_list):
 # reed_list = get_reed_datas()
 
 # write_to_reed_csv(reed_list)
+
+def get_solitary_bee_hotel():
+    file_name = 'solitary_bee_hotel.geojson'
+    file_datas = {}
+    with open(os.path.join(settings.DATA_ROOT, file_name)) as f:
+        file_datas = json.loads(f.read())
+
+    datas = []
+    for data in file_datas["features"]:
+        _data = {
+            'lat': data["geometry"]["coordinates"][1],
+            'lon': data["geometry"]["coordinates"][0],
+            'name': data["properties"]["organization_school"],
+            'id': data["properties"]["cartodb_id"]
+        }
+        datas.append(_data)
+
+    return datas
