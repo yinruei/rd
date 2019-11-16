@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import os
 import sys
+import csv
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 if BASE_DIR not in sys.path:
@@ -33,7 +35,7 @@ def get_green_restaurant_data():
         data_dict['bussiness_time'] = data_dict.pop('開放時間(統一格式)')
         data_dict['updtime'] = data_dict.pop('近期更新時間')
         data_dict['updtime'] = str(data_dict['updtime'])[:6]
-
+        data_dict['id'] = i+1
         img_list = []
         data_dict['imgs'] = img_list
         for key, value in data_dict.items():
@@ -48,6 +50,25 @@ def get_green_restaurant_data():
 
     return green_restaurant
 
+def write_to_green_restaurant_csv(green_restaurant):
+    with open('green_restaurant.csv', 'w', newline='') as csvFile:
+        # 定義欄位
+        fieldNames = ['id', 'name', 'address', 'lat', 'lon', 'tel', 'bussiness_time', 'updtime', 'imgs']
+
+        # 將 dictionary 寫入 CSV 檔
+        writer = csv.DictWriter(csvFile, fieldNames)
+
+        # 寫入第一列的欄位名稱
+        writer.writeheader()
+
+        # 寫入資料
+        for green in green_restaurant:
+            writer.writerow(green)
+
+# input_green_restaurant = get_green_restaurant_data()
+
+# write_to_green_restaurant_csv(input_green_restaurant)
+
 
 def get_reed_datas():
     df = pd.read_excel(os.path.join(settings.DATA_ROOT, "plants.xlsx"))
@@ -56,14 +77,37 @@ def get_reed_datas():
     filter_header_data = fetched_reed_datas[header]
 
     reed_list = []
+    idx = 0
     for index, row in filter_header_data.iterrows():
         data_index = filter_header_data.loc[index]
         data_dict = data_index.to_dict()
         data_dict['name'] = data_dict.pop('vernacularName')
         data_dict['lat'] = data_dict.pop('decimalLatitude')
         data_dict['lon'] = data_dict.pop('decimalLongitude')
+        data_dict['id'] = idx+1
+        idx +=1
+        if (data_dict['lon'] == 120.0502778 or data_dict['lat'] == 24.75027778) or (data_dict['lon'] == "" or data_dict['lat'] == ""):
+            continue
         reed_list.append(data_dict)
-        if data_dict['lon'] == "" or data_dict['lat'] == "":
-            del reed_list[index]
 
     return reed_list
+
+
+def write_to_reed_csv(reed_list):
+    with open('reed_data.csv', 'w', newline='') as csvFile:
+        # 定義欄位
+        fieldNames = ['name', 'lat', 'lon']
+
+        # 將 dictionary 寫入 CSV 檔
+        writer = csv.DictWriter(csvFile, fieldNames)
+
+        # 寫入第一列的欄位名稱
+        writer.writeheader()
+
+        # 寫入資料
+        for rd in reed_list:
+            writer.writerow(rd)
+
+# reed_list = get_reed_datas()
+
+# write_to_reed_csv(reed_list)
