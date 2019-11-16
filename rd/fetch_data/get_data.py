@@ -76,4 +76,14 @@ def get_solitary_bee_hotel():
     with open(os.path.join(settings.DATA_ROOT, file_name)) as f:
         file_datas = json.loads(f.read())
 
-    return file_datas["features"]
+    datas = []
+    for data in file_datas["features"]:
+        _data = {
+            'lat': data["geometry"]["coordinates"][1],
+            'lon': data["geometry"]["coordinates"][0],
+            'name': data["properties"]["organization_school"],
+            'id': data["properties"]["cartodb_id"]
+        }
+        datas.append(_data)
+
+    return datas
