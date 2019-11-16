@@ -54,8 +54,8 @@ const ReedMap = {
           minZoom: 7,
           maxBounds: L.latLngBounds(southWest, northEast),
       });
-
-      this.map.addLayer(new L.TileLayer('http://mt1.google.com/vt/lyrs=p&x={x}&y={y}&z={z}', {
+      console.log('21222', GV.MAP_TILE)
+      this.map.addLayer(new L.TileLayer(GV.MAP_TILE, {
         attribution: '@Google'
       }))
 

@@ -31,7 +31,8 @@ def index(request):
         'user': user,
         'green_restaurant': green_restaurant,
         'reed_datas': reed_datas,
-        'bee_hotel_datas': bee_hotel_datas
+        'bee_hotel_datas': bee_hotel_datas,
+        'map_tile': settings.MAP_TILE
     }
 
     return render(request, template, context)

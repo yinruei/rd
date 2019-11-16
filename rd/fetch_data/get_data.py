@@ -49,7 +49,7 @@ def get_green_restaurant_data():
         if data_dict['lon'] == "" or data_dict['lat'] == "":
             del green_restaurant[i]
 
-    with open('green_restaurant.json', 'w') as f:
+    with open(os.path.join(settings.DATA_ROOT, 'green_restaurant.json'), 'w') as f:
         json.dump(green_restaurant, f)
 
     # return json.dumps(green_restaurant)
@@ -95,20 +95,15 @@ def get_reed_datas():
         data_dict['img'] = get_reed_shot_img(data_dict['id'])
         reed_list.append(data_dict)
 
-    with open('reed_data.json', 'w') as f:
+    with open(os.path.join(settings.DATA_ROOT, 'reed_data.json'), 'w') as f:
         json.dump(reed_list, f)
     # return json.dumps(reed_list)
-
-get_reed_datas()
-
-
 
 def get_reed_shot_img(reed_id):
     img = ''
     folder = os.path.join(settings.DATA_ROOT, 'reed_shot')
     if os.path.isdir(folder):
         file_name = reed_id + '.jpg'
-
         if os.path.isfile(os.path.join(folder, file_name)):
             img = os.path.join(settings.DATA_URL, 'reed_shot', file_name)
 
