@@ -22,4 +22,5 @@ from rd.reed_map import urls as reed_map
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('', include(reed_map))
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) \
+  + static(settings.DATA_URL, document_root=settings.DATA_ROOT)
