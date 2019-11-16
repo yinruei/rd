@@ -3,7 +3,7 @@ from datetime import datetime
 from dateutil.parser import parse
 
 from django.shortcuts import render
-from rd.data.get_data import (
+from rd.fetch_data.get_data import (
     get_green_restaurant_data,
     get_reed_datas
 )
