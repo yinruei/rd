@@ -3,6 +3,7 @@ const ReedMap = {
   name: 'ReedMap',
   props: [
     'markers_info',
+    'user_edit_permission'
   ],
 
   data() {
@@ -12,10 +13,12 @@ const ReedMap = {
       reed_markers: [],
       recycling_markers: [],
       restaurant_markers: [],
+      river_markers: [],
 
       reed_datas: GV.REED_DATAS,
       restaurant_datas: GV.GEEN_RESTAURANT,
-      recycling_datas: [{
+      recycling_datas: GV.BEE_HOTEL_DATAS,
+      river_datas: [{
         lat: 25.095184,
         lon: 121.611789
       },{
@@ -41,8 +44,8 @@ const ReedMap = {
 
   methods: {
     map_init() {
-      let southWest = L.latLng(25.295184, 119.687789)
-      let northEast = L.latLng(21.809023, 122.386521)
+      let southWest = L.latLng(21.809023, 119.687789)
+      let northEast = L.latLng(25.295184, 122.386521)
 
       this.map = new L.Map('map', {
           center: new L.LatLng(23.045915, 120.994775),
@@ -51,10 +54,14 @@ const ReedMap = {
           minZoom: 7,
           maxBounds: L.latLngBounds(southWest, northEast),
       });
+      console.log('21222', GV.MAP_TILE)
+      this.map.addLayer(new L.TileLayer(GV.MAP_TILE, {
+        attribution: '@Google'
+      }))
 
-      this.map.addLayer(new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      }));
+      // this.map.addLayer(new L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      //     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      // }));
     },
 
     get_context(data) {
@@ -65,8 +72,11 @@ const ReedMap = {
       return '--'
     },
 
-    get_marker_popup(data) {
+    get_marker_popup(data, marker_type) {
       let popup_html = ''
+      let imgs = ''
+      let upload_btn = ''
+
       if (data.hasOwnProperty('name')) {
         popup_html += '<div>名稱: ' + this.get_context(data.name) + '</div>'
       }
@@ -79,15 +89,30 @@ const ReedMap = {
       if (data.hasOwnProperty('updtime')) {
         popup_html += '<div>更新時間: ' + this.get_context(data.updtime) + '</div>'
       }
+      if (data.hasOwnProperty('img')) {
+        imgs = '<img width=600 src="' + data.img + '"/>'
+      }
+
+      popup_html += imgs
+
+      if (this.user_edit_permission.hasOwnProperty(GV.USER)) {
+        let user_permission = this.user_edit_permission[GV.USER]
+        if (user_permission.indexOf(marker_type) >= 0) {
+          upload_btn = '<button>我要上傳</button>'
+        }
+      }
+
+      popup_html += upload_btn
 
       return popup_html
     },
 
-    add_item_marker(datas, markers, icon) {
+    add_item_marker(datas, markers, icon, marker_type) {
       for (let data of datas) {
-        let marker_popup_info = this.get_marker_popup(data)
+        let marker_popup_info = this.get_marker_popup(data, marker_type)
         let popup_options = {
-          'className' : 'custom_marker_popup'
+          'className' : 'custom_marker_popup',
+          maxWidth: 700
         }
         let marker = L.marker([data['lat'], data['lon']], {icon: icon}).bindPopup(marker_popup_info, popup_options)
         this.map.addLayer(marker)
@@ -120,15 +145,42 @@ const ReedMap = {
             datas = this.recycling_datas
             markers = this.recycling_markers
           }
+          else if (marker_info.name === 'river') {
+            datas = this.river_datas
+            markers = this.river_markers
+          }
 
           if (datas !== null && markers !== null) {
             if (marker_info.selected) {
-              this.add_item_marker(datas, markers, marker_info.icon)
+              if (marker_info.name === 'river') {
+                this.add_river_markers()
+              }
+              else {
+                this.add_item_marker(datas, markers, marker_info.icon, marker_info.name)
+              }
             }
             else {
               this.remove_item_marker(markers)
             }
           }
+        }
+      }
+    },
+
+    add_river_markers() {
+      if (this.map !== null) {
+        for (let marker_info of this.river_datas) {
+          let geojsonMarkerOptions = {
+            radius: 8,
+            fillColor: "#ff7800",
+            color: "#000",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+          }
+          let marker = L.circleMarker([marker_info['lat'], marker_info['lon']], geojsonMarkerOptions);
+          this.map.addLayer(marker)
+          this.river_markers.push(marker)
         }
       }
     }

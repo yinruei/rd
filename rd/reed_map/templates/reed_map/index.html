@@ -32,11 +32,14 @@
     var GV = {
       REED_ICON: "{% static 'imgs/reed.png' %}",
       RECYCLING_ICON: "{% static 'imgs/recycling.png' %}",
-      RESTAURANT_ICON: "{% static 'imgs/restaurant.png' %}"
+      RESTAURANT_ICON: "{% static 'imgs/restaurant.png' %}",
+      RIVER_ICON: "{% static 'imgs/reed.png' %}",
     };
-
+    GV.MAP_TILE = '{{ map_tile }}';
     GV.GEEN_RESTAURANT = {{ green_restaurant|safe }};
     GV.REED_DATAS = {{ reed_datas|safe }};
+    GV.BEE_HOTEL_DATAS = {{ bee_hotel_datas|safe }};
+    GV.USER = "{{ user }}";
 
   </script>
 
@@ -59,6 +62,7 @@
     <div class="left_container">
       <reed_map
         :markers_info="markers_info"
+        :user_edit_permission="user_edit_permission"
       ></reed_map>
     </div>
   </div>
@@ -74,7 +78,11 @@
       },
 
       data: {
-        restaurant_datas: GV.GEEN_RESTAURANT,
+        user_edit_permission: {
+          user_A: ['reed'],
+          user_B: ['restaurant'],
+          user_C: ['reed', 'restaurant']
+        },
 
         markers_info: [{
           name: 'reed',
@@ -103,6 +111,10 @@
             iconSize: [46, 46],
             iconAnchor: [23, 13]
           })
+        }, {
+          name: 'river',
+          img: GV.RIVER_ICON,
+          selected: true
         }]
       },
 

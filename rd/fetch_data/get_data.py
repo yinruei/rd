@@ -1,7 +1,10 @@
 import pandas as pd
 import numpy as np
 import os
+import json
 import sys
+import csv
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 if BASE_DIR not in sys.path:
@@ -33,7 +36,7 @@ def get_green_restaurant_data():
         data_dict['bussiness_time'] = data_dict.pop('開放時間(統一格式)')
         data_dict['updtime'] = data_dict.pop('近期更新時間')
         data_dict['updtime'] = str(data_dict['updtime'])[:6]
-
+        data_dict['id'] = i+1
         img_list = []
         data_dict['imgs'] = img_list
         for key, value in data_dict.items():
@@ -46,13 +49,37 @@ def get_green_restaurant_data():
         if data_dict['lon'] == "" or data_dict['lat'] == "":
             del green_restaurant[i]
 
-    return green_restaurant
+    with open(os.path.join(settings.DATA_ROOT, 'green_restaurant.json'), 'w') as f:
+        json.dump(green_restaurant, f)
+
+    # return json.dumps(green_restaurant)
+
+get_green_restaurant_data()
+
+def write_to_green_restaurant_csv(green_restaurant):
+    with open('green_restaurant.csv', 'w', newline='') as csvFile:
+        # 定義欄位
+        fieldNames = ['id', 'name', 'address', 'lat', 'lon', 'tel', 'bussiness_time', 'updtime', 'imgs']
+
+        # 將 dictionary 寫入 CSV 檔
+        writer = csv.DictWriter(csvFile, fieldNames)
+
+        # 寫入第一列的欄位名稱
+        writer.writeheader()
+
+        # 寫入資料
+        for green in green_restaurant:
+            writer.writerow(green)
+
+# input_green_restaurant = get_green_restaurant_data()
+
+# write_to_green_restaurant_csv(input_green_restaurant)
 
 
 def get_reed_datas():
     df = pd.read_excel(os.path.join(settings.DATA_ROOT, "plants.xlsx"))
     fetched_reed_datas = df.loc[df['vernacularName'].isin(['臺灣蘆竹', '蘆竹', '蘆葦', '臺灣蘆葦', '開卡蘆'])]
-    header = ['decimalLongitude','decimalLatitude', 'vernacularName']
+    header = ['id', 'decimalLongitude','decimalLatitude', 'vernacularName']
     filter_header_data = fetched_reed_datas[header]
 
     reed_list = []
@@ -62,8 +89,60 @@ def get_reed_datas():
         data_dict['name'] = data_dict.pop('vernacularName')
         data_dict['lat'] = data_dict.pop('decimalLatitude')
         data_dict['lon'] = data_dict.pop('decimalLongitude')
-        reed_list.append(data_dict)
-        if data_dict['lon'] == "" or data_dict['lat'] == "":
-            del reed_list[index]
+        if (data_dict['lon'] == 120.0502778 or data_dict['lat'] == 24.75027778) or (data_dict['lon'] == "" or data_dict['lat'] == ""):
+            continue
 
-    return reed_list
+        data_dict['img'] = get_reed_shot_img(data_dict['id'])
+        reed_list.append(data_dict)
+
+    with open(os.path.join(settings.DATA_ROOT, 'reed_data.json'), 'w') as f:
+        json.dump(reed_list, f)
+    # return json.dumps(reed_list)
+
+def get_reed_shot_img(reed_id):
+    img = ''
+    folder = os.path.join(settings.DATA_ROOT, 'reed_shot')
+    if os.path.isdir(folder):
+        file_name = reed_id + '.jpg'
+        if os.path.isfile(os.path.join(folder, file_name)):
+            img = os.path.join(settings.DATA_URL, 'reed_shot', file_name)
+
+    return img
+
+
+def write_to_reed_csv(reed_list):
+    with open('reed_data.csv', 'w', newline='') as csvFile:
+        # 定義欄位
+        fieldNames = ['name', 'lat', 'lon']
+
+        # 將 dictionary 寫入 CSV 檔
+        writer = csv.DictWriter(csvFile, fieldNames)
+
+        # 寫入第一列的欄位名稱
+        writer.writeheader()
+
+        # 寫入資料
+        for rd in reed_list:
+            writer.writerow(rd)
+
+# reed_list = get_reed_datas()
+
+# write_to_reed_csv(reed_list)
+
+def get_solitary_bee_hotel():
+    file_name = 'solitary_bee_hotel.geojson'
+    file_datas = {}
+    with open(os.path.join(settings.DATA_ROOT, file_name)) as f:
+        file_datas = json.loads(f.read())
+
+    datas = []
+    for data in file_datas["features"]:
+        _data = {
+            'lat': data["geometry"]["coordinates"][1],
+            'lon': data["geometry"]["coordinates"][0],
+            'name': data["properties"]["organization_school"],
+            'id': data["properties"]["cartodb_id"]
+        }
+        datas.append(_data)
+
+    return datas

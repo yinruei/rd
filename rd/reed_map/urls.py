@@ -14,9 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.urls import path, re_path
-from .views import index
+from .views import index, init_page
 
 urlpatterns = [
     # path('/<slug:init_time>', index, name='index'),
     path('', index, name='index'),
+    path('init_page/', init_page, name='init_page')
 ]
