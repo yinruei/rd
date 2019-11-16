@@ -11,7 +11,7 @@ CACHES = {
     }
 }
 
-DEBUG = False
+DEBUG = True
 COMPRESS_ENABLED = False
 COMPRESS_OFFLINE = False
 
