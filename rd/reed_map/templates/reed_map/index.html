@@ -43,7 +43,10 @@
     GV.GEEN_RESTAURANT = {{ green_restaurant|safe }};
     GV.REED_DATAS = {{ reed_datas|safe }};
     GV.BEE_HOTEL_DATAS = {{ bee_hotel_datas|safe }};
+    GV.RIVER_DATAS = {{ water_quality_data|safe }};
     GV.USER = "{{ user }}";
+
+    GV.UPLOAD_URL = "/upload/"   // <-- 這裏寫死吧. 妳們太乖了~~
 
   </script>
 
@@ -83,15 +86,24 @@
 
       data: {
         user_edit_permission: {
-          user_A: ['reed'],
-          user_B: ['green_restaurant'],
-          user_C: ['reed', 'green_restaurant']
+          user_A: {
+            default_view: ['reed', 'river'],
+            edit: []
+          },
+          user_B: {
+            default_view: ['reed', 'recycling', 'green_restaurant'],
+            edit: []
+          },
+          user_C: {
+            default_view: ['reed', 'recycling', 'green_restaurant'],
+            edit: ['green_restaurant']
+          },
         },
 
         markers_info: [{
           name: 'reed',
           img: GV.REED_ICON,
-          selected: true,
+          selected: false,
           icon: L.icon({
             iconUrl: GV.REED_ICON,
             // iconSize: [36, 36],
@@ -99,17 +111,17 @@
           })
         }, {
           name: 'green_restaurant',
-          img: GV.RESTAURANT_ICON,
-          selected: true,
+          img: GV.GEEN_RESTAURANT_ICON,
+          selected: false,
           icon: L.icon({
-            iconUrl: GV.RESTAURANT_ICON,
+            iconUrl: GV.GEEN_RESTAURANT_ICON,
             // iconSize: [36, 36],
             iconAnchor: [23, 18]
           })
         }, {
           name: 'recycling',
           img: GV.RECYCLING_ICON,
-          selected: true,
+          selected: false,
           icon: L.icon({
             iconUrl: GV.RECYCLING_ICON,
             // iconSize: [36, 36],
@@ -118,7 +130,7 @@
         }, {
           name: 'river',
           img: GV.NORMAL_WATER_ICON,
-          selected: true
+          selected: false,
         }]
       },
 
@@ -126,14 +138,22 @@
       },
 
       methods: {
+        get_default_select_markers() {
+          for (let marker of this.markers_info) {
+            let marker_type = marker.name
+
+            marker.selected = this.user_edit_permission[GV.USER].default_view.indexOf(marker_type) >= 0
+          }
+        }
       },
 
       watch: {
       },
 
       mounted() {
-        // this.$nextTick(() => {
-        // })
+        this.$nextTick(() => {
+          this.get_default_select_markers()
+        })
       },
 
       created() {

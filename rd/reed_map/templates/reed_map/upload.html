@@ -1,0 +1,91 @@
+{% load staticfiles %}
+{% load compress %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta charset="UTF-8">
+  <title>新增資料</title>
+
+  {% compress js %}
+  <script src="{% static 'js/reed_map/vue.js' %}"></script>
+  <script src="{% static 'js/reed_map/es6-promise.auto.js' %}"></script>
+  <script src="{% static 'js/reed_map/babel.min.js' %}"></script>
+  {% endcompress %}
+
+  {% compress css %}
+  {% endcompress %}
+
+  <style>
+    #upload_conditions {
+      margin: 0 auto;
+      padding: 10px;
+    }
+
+    .edit_description_block {
+      width: 70%;
+      height: 200px;
+      border-radius: 6px;
+      border: 1px solid rgb(203, 203, 203);
+      padding: 12px;
+      font-size: 14px;
+      resize: none;
+    }
+
+    [v-cloak] {
+      display: none;
+    }
+
+  </style>
+</head>
+
+<body>
+  <div id="upload_conditions">
+    <form action="/save_data/" method = "post">
+      <div>請輸入內容：</div>
+      <textarea
+        name="contents"
+        class="edit_description_block"
+      ></textarea>
+      <input type="hidden" name="edit_type" value="{{ edit_type }}"/>
+      <input type="hidden" name="edit_id" value="{{ edit_id }}"/>
+      <input type="hidden" name="user" value="{{ user }}"/>
+      <button type="submit">送出</button>
+    </form>
+  </div>
+
+  <script type="text/babel" data-presets="es2015,stage-2">
+
+    Vue.config.devtools = true;
+    window.app = new Vue({
+      el: '#upload_conditions',
+      delimiters: ["[[", "]]"],
+
+      data: {
+      },
+
+      computed: {
+      },
+
+      methods: {
+      },
+
+      watch: {
+      },
+
+      mounted() {
+        // this.$nextTick(() => {
+        // })
+      },
+
+      created() {
+
+      },
+
+    });
+  </script>
+</body>

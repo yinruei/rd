@@ -20,27 +20,7 @@ const ReedMap = {
       reed_datas: GV.REED_DATAS,
       restaurant_datas: GV.GEEN_RESTAURANT,
       recycling_datas: GV.BEE_HOTEL_DATAS,
-      river_datas: [{
-        lat: 25.095184,
-        lon: 121.611789,
-        river_pollution_index: 2
-      },{
-        lat: 24.795184,
-        lon: 120.611789,
-        river_pollution_index: 2
-      },{
-        lat: 24.095184,
-        lon: 120.811789,
-        river_pollution_index: 3
-      },{
-        lat: 25.095184,
-        lon: 121.611789,
-        river_pollution_index: 7
-      },{
-        lat: 24.095184,
-        lon: 120.611789,
-        river_pollution_index: 2
-      }]
+      river_datas: GV.RIVER_DATAS
 
     }
   },
@@ -80,9 +60,11 @@ const ReedMap = {
     },
 
     get_marker_popup(data, marker_type) {
-      let popup_html = ''
+      let popup_html = '<div class="my_popup_container">'
       let imgs = ''
+      let img = ''
       let upload_btn = ''
+      let img_width = 600
 
       if (data.hasOwnProperty('name')) {
         popup_html += '<div>名稱: ' + this.get_context(data.name) + '</div>'
@@ -96,28 +78,58 @@ const ReedMap = {
       if (data.hasOwnProperty('updtime')) {
         popup_html += '<div>更新時間: ' + this.get_context(data.updtime) + '</div>'
       }
-      if (data.hasOwnProperty('img')) {
-        imgs = '<img width=600 src="' + data.img + '"/>'
+      if (data.hasOwnProperty('img') && marker_type !== 'green_restaurant') {
+        img = '<div><img width=600 src="' + data.img + '"/></div>'
+        popup_html += img
       }
+      if (data.hasOwnProperty('imgs') && marker_type !== 'green_restaurant') {
+        for (let _img of data.imgs) {
+          imgs += '<div><img width=' + img_width + ' src="' + _img + '"/></div>'
+        }
+        popup_html += imgs
+      }
+      if (data.hasOwnProperty('river')) {
+        let river_img = ''
+        popup_html += '<div style="font-size: 18px;">對應的附近水質測站</div>'
 
-      popup_html += imgs
+        if (data.river.hasOwnProperty('name')) {
+          popup_html += '<div>水質測站名稱：' + data.river.name + '</div>'
+        }
+        if (data.river.hasOwnProperty('pollution_index')) {
+          let quality = ''
+          if (data.river.pollution_index < 2) {
+            quality ='低'
+          }
+          else if (data.river.pollution_index <= 6) {
+            quality = '中'
+          }
+          else {
+            quality = '高'
+          }
+          popup_html += '<div>河川汙染指數：' + quality + '</div>'
+        }
 
-      if (this.user_edit_permission.hasOwnProperty(GV.USER)) {
-        let user_permission = this.user_edit_permission[GV.USER]
+        for (let _img of data.river.imgs) {
+          river_img += '<div><img width=' + img_width + ' src="' + _img + '"/></div>'
+        }
+        popup_html += river_img
 
-        if (user_permission.indexOf(marker_type) >= 0) {
-          upload_btn = '<button @click="'+this.upload_data()+'">我要上傳</button>'
+        if (data.river.hasOwnProperty('station_url')) {
+          popup_html += '<div><a href="' + data.river.station_url + '" target="_blank">測站連結</a></div>'
         }
       }
-      console.log(upload_btn)
 
-      popup_html += upload_btn
 
-      return popup_html
-    },
+      if (this.user_edit_permission.hasOwnProperty(GV.USER)) {
+        let user_permissions = this.user_edit_permission[GV.USER]
 
-    upload_data() {
-      console.log("innnnnn", this.select_marker_id, this.selected_marker)
+        if (user_permissions.edit.indexOf(marker_type) >= 0) {
+          upload_btn = '<a href="/upload/' + marker_type + '/' + data.id + '/' + GV.USER + '/">我要上傳</a>'
+          popup_html += upload_btn
+        }
+      }
+
+      return popup_html + '</div>'
     },
 
     add_item_marker(datas, markers, icon, marker_type) {
@@ -126,7 +138,8 @@ const ReedMap = {
         let marker_popup_info = this.get_marker_popup(data, marker_type)
         let popup_options = {
           'className' : 'custom_marker_popup',
-          maxWidth: 700
+          maxWidth: 750,
+          maxHeight: 300
         }
         let marker = L.marker([data['lat'], data['lon']], {icon: icon, datas: data})
                       .bindPopup(marker_popup_info, popup_options)
