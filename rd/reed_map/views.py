@@ -7,7 +7,6 @@ from django.urls import reverse
 from django.shortcuts import render
 from rd.fetch_data.get_data import (
     get_green_restaurant_data,
-    # get_reed_datas,
     get_solitary_bee_hotel,
     get_water_quality_data
 )
@@ -19,8 +18,6 @@ def index(request, user=''):
     if user == '':
         user = request.POST.get('user', 'None')
 
-    # green_restaurant = get_green_restaurant_data()
-    # reed_datas = get_reed_datas()
     bee_hotel_datas = get_solitary_bee_hotel()
     water_quality_data = get_water_quality_data()
 
@@ -34,6 +31,11 @@ def index(request, user=''):
     with open(os.path.join(DATA_ROOT, 'reed_river_all.json'), 'r') as f:
         reed_river_data = json.load(f)
 
+    # edited_datas = {}
+    # if os.path.isfile(os.path.join(settings.BASE_DIR, 'new_data.csv')):
+    #     with open(os.path.join(settings.BASE_DIR, 'new_data.csv'), 'r') as f:
+    #         edited_datas = json.load(f)
+
     context = {
         'user': user,
         'green_restaurant': green_restaurant,
@@ -41,6 +43,7 @@ def index(request, user=''):
         'bee_hotel_datas': bee_hotel_datas,
         'map_tile': settings.MAP_TILE,
         'water_quality_data': water_quality_data,
+        # 'edited_datas': edited_datas
     }
 
     return render(request, template, context)
@@ -68,11 +71,14 @@ def save_data(request):
     template = 'reed_map/thanks.html'
     contents = request.POST.get('contents', None)
     edit_type = request.POST.get('edit_type', None)
+    edit_id = request.POST.get('edit_id', None)
     user = request.POST.get('user', None)
 
-    context = {}
+    context = {
+        'user': user
+    }
 
-    file_content = user + ',' + edit_type + ',' + contents
+    file_content = user + ',' + edit_type + ',' + edit_id + ',' +contents
     _f = open('new_data.csv', 'w')
     _f.write(file_content)
     _f.close

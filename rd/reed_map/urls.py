@@ -19,6 +19,7 @@ from .views import index, init_page, upload, save_data
 app_name = 'reed_map'
 
 urlpatterns = [
+    path('map/<str:user>/', index, name='map'),
     path('map/', index, name='map'),
     path('', init_page, name='init_page'),
     path('save_data/', save_data, name='save_data'),

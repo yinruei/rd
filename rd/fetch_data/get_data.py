@@ -77,7 +77,7 @@ def write_to_green_restaurant_csv(green_restaurant):
 
 
 def get_reed_and_river_data():
-    df = pd.read_excel(os.path.join(settings.DATA_ROOT, "product_reed_river.xlsx"))
+    df = pd.read_excel(os.path.join(settings.DATA_ROOT, "product_reed_river_new.xlsx"))
     header = ["id",	"catalogNumber", "recordedBy", "eventDate", "locality", "decimalLatitude",
     "decimalLongitude",	"identifiedBy",	"scientificName", "family", "vernacularName", "產地照片",
     "產地標本照片",	"空拍照片", "測站名稱", "測站編號", "經度", "緯度", "河川汙染指數", "測站圖片URL", "測站RUL"]
@@ -87,7 +87,7 @@ def get_reed_and_river_data():
 
     data = fetched_reed_datas.replace(np.nan, '', regex=True)
     img_data_reed_list = ["產地照片", "產地標本照片", "空拍照片"]
-    img_data_river_list = ["測站圖片URL", "測站RUL"]
+    img_data_river_list = ["測站圖片URL"]
 
     reed_river_list = []
     for index, row in data.iterrows():
@@ -104,6 +104,7 @@ def get_reed_and_river_data():
         river_dict['lon'] = data_dict.pop('經度')
         river_dict['lat'] = data_dict.pop('緯度')
         river_dict['pollution_index'] = data_dict.pop('河川汙染指數')
+        river_dict['station_url'] = data_dict.pop('測站RUL')
 
         data_dict['river'] = river_dict
 
@@ -114,18 +115,25 @@ def get_reed_and_river_data():
         for key, value in data_dict.items():
             if key in img_data_reed_list:
                 if value != "":
-                    img_reed_list.append(value)
+                    if key == "空拍照片" or key == '測站圖片URL':
+                        img = os.path.join(settings.DATA_URL, 'reed_shot', value)
+                    else:
+                        img = value
+                    img_reed_list.append(img)
 
             if key in img_data_river_list:
                 if value != "":
-                    img_river_list.append(value)
+                    if key == "空拍照片" or key == '測站圖片URL':
+                        img = os.path.join(settings.DATA_URL, 'reed_shot', value)
+                    else:
+                        img = value
+                    img_river_list.append(img)
 
-        del data_dict['產地照片'], data_dict['產地標本照片'], data_dict['空拍照片'], data_dict["測站圖片URL"], data_dict["測站RUL"], data_dict['catalogNumber'], data_dict['eventDate']
+        del data_dict['產地照片'], data_dict['產地標本照片'], data_dict['空拍照片'], data_dict["測站圖片URL"], data_dict['catalogNumber'], data_dict['eventDate']
 
         if (data_dict['river']['lon'] == '' or data_dict['river']['lon'] == ''):
             continue
         reed_river_list.append(data_dict)
-
     with open(os.path.join(settings.DATA_ROOT, 'reed_river_all.json'), 'w') as f:
         json.dump(reed_river_list, f)
 
