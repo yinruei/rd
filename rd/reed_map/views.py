@@ -31,6 +31,11 @@ def index(request, user=''):
     with open(os.path.join(DATA_ROOT, 'reed_river_all.json'), 'r') as f:
         reed_river_data = json.load(f)
 
+    edited_datas = {}
+    # if os.path.isfile(os.path.join(settings.BASE_DIR, 'new_data.csv')):
+    #     with open(os.path.join(settings.BASE_DIR, 'new_data.csv'), 'r') as f:
+    #         edited_datas = json.load(f)
+
     context = {
         'user': user,
         'green_restaurant': green_restaurant,
@@ -38,6 +43,7 @@ def index(request, user=''):
         'bee_hotel_datas': bee_hotel_datas,
         'map_tile': settings.MAP_TILE,
         'water_quality_data': water_quality_data,
+        'edited_datas': edited_datas
     }
 
     return render(request, template, context)
