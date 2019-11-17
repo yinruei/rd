@@ -6,7 +6,7 @@ from dateutil.parser import parse
 from django.shortcuts import render
 from rd.fetch_data.get_data import (
     get_green_restaurant_data,
-    get_reed_datas,
+    # get_reed_datas,
     get_solitary_bee_hotel,
     get_water_quality_data
 )
@@ -29,13 +29,17 @@ def index(request):
     with open(os.path.join(DATA_ROOT, 'reed_data.json'), 'r') as f:
         reed_datas = json.load(f)
 
+    with open(os.path.join(DATA_ROOT, 'reed_river_all.json'), 'r') as f:
+        reed_river_data = json.load(f)
+
     context = {
         'user': user,
         'green_restaurant': green_restaurant,
         'reed_datas': reed_datas,
         'bee_hotel_datas': bee_hotel_datas,
         'map_tile': settings.MAP_TILE,
-        'water_quality_data': water_quality_data
+        'water_quality_data': water_quality_data,
+        'reed_river_data': reed_river_data
     }
 
     return render(request, template, context)

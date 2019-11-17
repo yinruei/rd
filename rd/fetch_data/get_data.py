@@ -76,28 +76,83 @@ def write_to_green_restaurant_csv(green_restaurant):
 # write_to_green_restaurant_csv(input_green_restaurant)
 
 
-def get_reed_datas():
-    df = pd.read_excel(os.path.join(settings.DATA_ROOT, "plants.xlsx"))
-    fetched_reed_datas = df.loc[df['vernacularName'].isin(['臺灣蘆竹', '蘆竹', '蘆葦', '臺灣蘆葦', '開卡蘆'])]
-    header = ['id', 'decimalLongitude','decimalLatitude', 'vernacularName']
-    filter_header_data = fetched_reed_datas[header]
+def get_reed_and_river_data():
+    df = pd.read_excel(os.path.join(settings.DATA_ROOT, "product_reed_river.xlsx"))
+    header = ["id",	"catalogNumber", "recordedBy", "eventDate", "locality", "decimalLatitude",
+    "decimalLongitude",	"identifiedBy",	"scientificName", "family", "vernacularName", "產地照片",
+    "產地標本照片",	"空拍照片", "測站名稱", "測站編號", "經度", "緯度", "河川汙染指數", "測站圖片URL", "測站RUL"]
 
-    reed_list = []
-    for index, row in filter_header_data.iterrows():
-        data_index = filter_header_data.loc[index]
+    filter_reed_datas = df.loc[df['vernacularName'].isin(['臺灣蘆竹', '蘆竹', '蘆葦', '臺灣蘆葦', '開卡蘆'])]
+    fetched_reed_datas = filter_reed_datas[header]
+
+    data = fetched_reed_datas.replace(np.nan, '', regex=True)
+    img_data_reed_list = ["產地照片", "產地標本照片", "空拍照片"]
+    img_data_river_list = ["測站圖片URL", "測站RUL"]
+
+    reed_river_list = []
+    for index, row in data.iterrows():
+        data_index = data.loc[index]
         data_dict = data_index.to_dict()
+        data_dict['id'] = data_dict.pop('id')
         data_dict['name'] = data_dict.pop('vernacularName')
-        data_dict['lat'] = data_dict.pop('decimalLatitude')
         data_dict['lon'] = data_dict.pop('decimalLongitude')
-        if (data_dict['lon'] == 120.0502778 or data_dict['lat'] == 24.75027778) or (data_dict['lon'] == "" or data_dict['lat'] == ""):
+        data_dict['lat'] = data_dict.pop('decimalLatitude')
+
+        river_dict= {}
+        river_dict['name'] = data_dict.pop('測站名稱')
+        river_dict['station_id'] = data_dict.pop('測站編號')
+        river_dict['lon'] = data_dict.pop('經度')
+        river_dict['lat'] = data_dict.pop('緯度')
+        river_dict['pollution_index'] = data_dict.pop('河川汙染指數')
+
+        data_dict['river'] = river_dict
+
+        img_reed_list = []
+        img_river_list = []
+        data_dict['imgs'] = img_reed_list
+        river_dict['imgs'] = img_river_list
+        for key, value in data_dict.items():
+            if key in img_data_reed_list:
+                if value != "":
+                    img_reed_list.append(value)
+
+            if key in img_data_river_list:
+                if value != "":
+                    img_river_list.append(value)
+
+        del data_dict['產地照片'], data_dict['產地標本照片'], data_dict['空拍照片'], data_dict["測站圖片URL"], data_dict["測站RUL"], data_dict['catalogNumber'], data_dict['eventDate']
+
+        if (data_dict['river']['lon'] == '' or data_dict['river']['lon'] == ''):
             continue
+        reed_river_list.append(data_dict)
 
-        data_dict['img'] = get_reed_shot_img(data_dict['id'])
-        reed_list.append(data_dict)
+    with open(os.path.join(settings.DATA_ROOT, 'reed_river_all.json'), 'w') as f:
+        json.dump(reed_river_list, f)
 
-    with open(os.path.join(settings.DATA_ROOT, 'reed_data.json'), 'w') as f:
-        json.dump(reed_list, f)
-    # return json.dumps(reed_list)
+# get_reed_and_river_data()
+
+# def get_reed_datas():
+#     df = pd.read_excel(os.path.join(settings.DATA_ROOT, "plants.xlsx"))
+#     fetched_reed_datas = df.loc[df['vernacularName'].isin(['臺灣蘆竹', '蘆竹', '蘆葦', '臺灣蘆葦', '開卡蘆'])]
+#     header = ['id', 'decimalLongitude','decimalLatitude', 'vernacularName']
+#     filter_header_data = fetched_reed_datas[header]
+
+#     reed_list = []
+#     for index, row in filter_header_data.iterrows():
+#         data_index = filter_header_data.loc[index]
+#         data_dict = data_index.to_dict()
+#         data_dict['name'] = data_dict.pop('vernacularName')
+#         data_dict['lat'] = data_dict.pop('decimalLatitude')
+#         data_dict['lon'] = data_dict.pop('decimalLongitude')
+#         if (data_dict['lon'] == 120.0502778 or data_dict['lat'] == 24.75027778) or (data_dict['lon'] == "" or data_dict['lat'] == ""):
+#             continue
+
+#         data_dict['img'] = get_reed_shot_img(data_dict['id'])
+#         reed_list.append(data_dict)
+
+#     with open(os.path.join(settings.DATA_ROOT, 'reed_data.json'), 'w') as f:
+#         json.dump(reed_list, f)
+#     # return json.dumps(reed_list)
 
 def get_reed_shot_img(reed_id):
     img = ''
