@@ -124,7 +124,7 @@ const ReedMap = {
         let user_permissions = this.user_edit_permission[GV.USER]
 
         if (user_permissions.edit.indexOf(marker_type) >= 0) {
-          upload_btn = '<a href="/upload/' + marker_type + '/">我要上傳</a>'
+          upload_btn = '<a href="/upload/' + marker_type + '/' + data.id + '/' + GV.USER + '/">我要上傳</a>'
           popup_html += upload_btn
         }
       }

@@ -2,6 +2,7 @@ import os
 import json
 from datetime import datetime
 from dateutil.parser import parse
+from django.urls import reverse
 
 from django.shortcuts import render
 from rd.fetch_data.get_data import (
@@ -13,9 +14,10 @@ from rd.fetch_data.get_data import (
 from django.conf import settings
 
 
-def index(request):
+def index(request, user=''):
     template = 'reed_map/index.html'
-    user = request.POST.get('user', 'None')
+    if user == '':
+        user = request.POST.get('user', 'None')
 
     # green_restaurant = get_green_restaurant_data()
     # reed_datas = get_reed_datas()
@@ -51,10 +53,28 @@ def init_page(request):
     return render(request, template, context)
 
 
-def upload(request, edit_type=''):
+def upload(request, edit_type='', edit_id='', user=''):
     template = 'reed_map/upload.html'
     context = {
-        'edit_type': edit_type
+        'edit_type': edit_type,
+        'edit_id': edit_id,
+        'user': user
     }
+
+    return render(request, template, context)
+
+
+def save_data(request):
+    template = 'reed_map/thanks.html'
+    contents = request.POST.get('contents', None)
+    edit_type = request.POST.get('edit_type', None)
+    user = request.POST.get('user', None)
+
+    context = {}
+
+    file_content = user + ',' + edit_type + ',' + contents
+    _f = open('new_data.csv', 'w')
+    _f.write(file_content)
+    _f.close
 
     return render(request, template, context)
