@@ -8,7 +8,7 @@
 -系統網址如下
 https://reedmap.herokuapp.com/
 
-![image](https://github.com/yinruei/rd/blob/master/ReadMe_Step1.png)
+![image](https://github.com/yinruei/rd/blob/prod/ReadMe_Step1.png)
 
 二、使用情境與流程說明
 -目標用戶可區分為蘆葦吸管的生產者、使用者與友善店家。
@@ -19,7 +19,7 @@ A.生產者重視蘆葦產地、鄰近水質資訊，以評估開發效益:
 (指數1~10分三類: <2[未/稍受汙染]、2~6[已受汙染]、>6[嚴重汙染])
 
 
-![image](https://github.com/yinruei/rd/blob/master/ReadMe_Step2.jpg)
+![image](https://github.com/yinruei/rd/blob/prod/ReadMe_Step2.jpg)
 
 
 2.針對有興趣的產地，點選查看詳細資訊，包含:
@@ -34,7 +34,7 @@ A.生產者重視蘆葦產地、鄰近水質資訊，以評估開發效益:
 
 
 
-![image](https://github.com/yinruei/rd/blob/master/ReadMe_Step3.jpg)
+![image](https://github.com/yinruei/rd/blob/prod/ReadMe_Step3.jpg)
 
 3.生產者根據上述資訊，可評估開發該產地，並留下回饋紀錄，例如:
 -植物區域範圍夠大、水質無汙染，值得前往實地探勘，排定預計時程。
@@ -102,10 +102,10 @@ C.友善店家重視使用者回饋、活動參與導客與曝光聲譽引流
 -本月已使用200根植物吸管有意識的客戶越來越多了，下個月要預先加訂了，棒棒。
 
 
-![image](https://github.com/yinruei/rd/blob/master/ReadMe_Step4.jpg)
+![image](https://github.com/yinruei/rd/blob/prod/ReadMe_Step4.jpg)
 
 
-![image](https://github.com/yinruei/rd/blob/master/ReadMe_Step5_Thanksyou.png)
+![image](https://github.com/yinruei/rd/blob/prod/ReadMe_Step5_Thanksyou.png)
 
 
 三、願景與未來發展
