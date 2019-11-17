@@ -20,7 +20,7 @@ app_name = 'reed_map'
 
 urlpatterns = [
     # path('/<slug:init_time>', index, name='index'),
-    path('', index, name='index'),
-    path('init_page/', init_page, name='init_page'),
+    path('map/', index, name='map'),
+    path('', init_page, name='init_page'),
     path('upload/<str:edit_type>/', upload, name='upload'),
 ]

@@ -35,11 +35,10 @@ def index(request):
     context = {
         'user': user,
         'green_restaurant': green_restaurant,
-        'reed_datas': reed_datas,
+        'reed_datas': reed_river_data,
         'bee_hotel_datas': bee_hotel_datas,
         'map_tile': settings.MAP_TILE,
         'water_quality_data': water_quality_data,
-        'reed_river_data': reed_river_data
     }
 
     return render(request, template, context)

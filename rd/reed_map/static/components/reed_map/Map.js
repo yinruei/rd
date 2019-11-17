@@ -17,26 +17,7 @@ const ReedMap = {
       restaurant_markers: [],
       river_markers: [],
 
-      reed_datas: [{
-        'id': 'TESRI21245',
-        'name': '開卡蘆',
-        'lat': 24.55875583,
-        'lon': 120.9335375,
-        'imgs': ['http://plant.tesri.gov.tw/PlantFile/photo/628013020/628013020sa_0007390.jpg'],
-        'river': {
-          'name': 'test',
-          'pollution_index': '3',
-          'lat': 24.55875583,
-          'lon': 120.9335375,
-          'imgs': ['http://plant.tesri.gov.tw/PlantFile/photo/628013020/628013020sa_0007390.jpg','/data/reed_shot/TESRI21245.jpg'],
-          'station_url': 'https://wq.epa.gov.tw/Code/Station.aspx?Water=River&Area=1140&Station=1023&IsCounty=N'
-        }
-      },{
-        'id': 'TESRI21245',
-        'name': '開卡蘆',
-        'lat': 23.55875583,
-        'lon': 120.9335375,
-      }],//GV.REED_DATAS,
+      reed_datas: GV.REED_DATAS,
       restaurant_datas: GV.GEEN_RESTAURANT,
       recycling_datas: GV.BEE_HOTEL_DATAS,
       river_datas: GV.RIVER_DATAS
