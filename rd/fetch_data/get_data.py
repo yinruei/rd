@@ -87,7 +87,7 @@ def get_reed_and_river_data():
 
     data = fetched_reed_datas.replace(np.nan, '', regex=True)
     img_data_reed_list = ["產地照片", "產地標本照片", "空拍照片"]
-    img_data_river_list = ["測站圖片URL", "測站RUL"]
+    img_data_river_list = ["測站圖片URL"]
 
     reed_river_list = []
     for index, row in data.iterrows():
@@ -104,6 +104,7 @@ def get_reed_and_river_data():
         river_dict['lon'] = data_dict.pop('經度')
         river_dict['lat'] = data_dict.pop('緯度')
         river_dict['pollution_index'] = data_dict.pop('河川汙染指數')
+        river_dict['station_url'] = data_dict.pop('測站RUL'),
 
         data_dict['river'] = river_dict
 
