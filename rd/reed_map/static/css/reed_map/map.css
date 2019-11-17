@@ -7,4 +7,16 @@
 
 .custom_marker_popup {
   z-index: 2;
+
+}
+
+.my_popup_container {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin-right: -15px;
+  /* font-size: 16px; */
+}
+.my_popup_container > div {
+  padding: 5px 5px 5px 0;
 }

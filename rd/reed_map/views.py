@@ -46,3 +46,12 @@ def init_page(request):
     context = {}
 
     return render(request, template, context)
+
+
+def upload(request, edit_type=''):
+    template = 'reed_map/upload.html'
+    context = {
+        'edit_type': edit_type
+    }
+
+    return render(request, template, context)
