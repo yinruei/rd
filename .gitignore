@@ -1,6 +1,6 @@
 **/*.pyc
 **/*.log
-static/*
+# static/*
 logfiles/*
 cache/*
 conf/dev/*
