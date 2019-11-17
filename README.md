@@ -34,7 +34,7 @@ A.生產者重視蘆葦產地、鄰近水質資訊，以評估開發效益:
 
 
 
-![image](https://github.com/yinruei/rd/blob/master/ReadMe_Step3.png)
+![image](https://github.com/yinruei/rd/blob/master/ReadMe_Step1.png)
 
 3.生產者根據上述資訊，可評估開發該產地，並留下回饋紀錄，例如:
 -植物區域範圍夠大、水質無汙染，值得前往實地探勘，排定預計時程。
