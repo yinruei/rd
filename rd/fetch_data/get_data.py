@@ -114,12 +114,18 @@ def get_reed_and_river_data():
         for key, value in data_dict.items():
             if key in img_data_reed_list:
                 if value != "":
-                    img = os.path.join(settings.DATA_URL, 'reed_shot', value)
+                    if key == "空拍照片" or key == '測站圖片URL':
+                        img = os.path.join(settings.DATA_URL, 'reed_shot', value)
+                    else:
+                        img = value
                     img_reed_list.append(img)
 
             if key in img_data_river_list:
                 if value != "":
-                    img = os.path.join(settings.DATA_URL, 'reed_shot', value)
+                    if key == "空拍照片" or key == '測站圖片URL':
+                        img = os.path.join(settings.DATA_URL, 'reed_shot', value)
+                    else:
+                        img = value
                     img_river_list.append(img)
 
         del data_dict['產地照片'], data_dict['產地標本照片'], data_dict['空拍照片'], data_dict["測站圖片URL"], data_dict["測站RUL"], data_dict['catalogNumber'], data_dict['eventDate']
